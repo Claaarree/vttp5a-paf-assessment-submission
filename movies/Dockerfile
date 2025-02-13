@@ -11,7 +11,7 @@ COPY mvnw .
 COPY mvnw.cmd .
 COPY pom.xml .
 COPY .mvn .mvn
-COPY ../data ../data
+COPY /../data /../data
 
 RUN chmod a+x ./mvnw && ./mvnw package -Dmaven.test.skip=true
 
