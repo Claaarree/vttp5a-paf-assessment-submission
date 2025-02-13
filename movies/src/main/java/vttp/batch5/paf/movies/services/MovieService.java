@@ -116,11 +116,11 @@ public class MovieService {
       Map<String, Object> params = new HashMap<>();
       params.put("DIRECTOR_TABLE_DATASET", directorsDS);
 
-      JasperReport report = JasperCompileManager.compileReport("..\\data\\director_movies_report.jrxml");
+      JasperReport report = JasperCompileManager.compileReport("data\\director_movies_report.jrxml");
 
       JasperPrint print = JasperFillManager.fillReport(report, params, reportDS);
 
-      JasperExportManager.exportReportToPdfFile(print, "..\\data\\director_movies_report.pdf");
+      JasperExportManager.exportReportToPdfFile(print, "data\\director_movies_report.pdf");
 
     } catch (JRException e) {
       // TODO Auto-generated catch block
