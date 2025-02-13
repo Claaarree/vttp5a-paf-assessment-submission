@@ -72,7 +72,7 @@ public class MongoMovieRepository {
 //         movies_count: {'$sum': 1},
 //         imdb_ids: {$push: '$imdb_id'}
 //     }},
-//     {$sort: {movies_count: -1}},
+//     {$sort: {movies_count: -1, _id: 1}},
 //     {$limit: 5}
 // ])
  //
@@ -84,8 +84,10 @@ public class MongoMovieRepository {
             .count().as("movies_count")
             .push(F_IMDB_ID).as("imdb_ids");
 
-    SortOperation sortByMovies = Aggregation.sort(Direction.DESC, "movies_count");
-    LimitOperation limitOps = Aggregation.limit(limit);
+    SortOperation sortByMovies = Aggregation.sort(Direction.DESC, "movies_count")
+            .and(Direction.ASC, "_id");
+            
+    LimitOperation limitOps = Aggregation.limit(limit); 
 
     Aggregation pipeline = Aggregation.newAggregation(removeEmpty, groupByDirector, sortByMovies, limitOps);
     return mongoTemplate.aggregate(pipeline, MONGO_C_IMDB, Document.class).getMappedResults();
