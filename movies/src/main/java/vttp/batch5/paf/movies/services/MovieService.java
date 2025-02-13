@@ -120,6 +120,8 @@ public class MovieService {
 
       JasperPrint print = JasperFillManager.fillReport(report, params, reportDS);
 
+      // generate PDF works on localhost but not on railway... something wrong with the docker folders?
+      // see example of generated pdf in data folder
       JasperExportManager.exportReportToPdfFile(print, "data\\director_movies_report.pdf");
 
     } catch (JRException e) {
