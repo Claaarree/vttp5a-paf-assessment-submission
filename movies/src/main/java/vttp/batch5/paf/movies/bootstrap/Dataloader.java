@@ -65,9 +65,12 @@ public class Dataloader implements CommandLineRunner{
     // checks if there is data in the db
     Long mongoCount = mongoTemplate.estimatedCount(MONGO_C_IMDB);
     SqlRowSet rs = sqlTemplate.queryForRowSet(MYSQL_CHECK_DATA);
+    Boolean sqlDataPresent = rs.next();
+
+    int lineCount = 0;
 
     // load data if none
-    if (mongoCount == 0 || !rs.next()){
+    if (mongoCount == 0 || !sqlDataPresent){
       File f = null;
       if (args.length != 1) {
         f = new File("../data/movies_post_2010.zip");
@@ -87,6 +90,7 @@ public class Dataloader implements CommandLineRunner{
 
       String line = "";
       while ((line = br.readLine()) != null){
+        lineCount++;
         // check release_date of movies
         Document d = Document.parse(line);
         String dateString = d.getString(F_RELEASE_DATE);
@@ -99,8 +103,8 @@ public class Dataloader implements CommandLineRunner{
         if(ld.isAfter(cutOff)){
           rawDocs.add(d);
           
-          if(rawDocs.size() == 25){
-            if (!rs.next()){
+          if(rawDocs.size() == 25 || line == null){
+            if (!sqlDataPresent){
               List<Object[]> params = rawDocs.stream()
               .map(document -> new Object[]{
                 document.getOrDefault(F_IMDB_ID, ""), 
@@ -156,8 +160,9 @@ public class Dataloader implements CommandLineRunner{
               }
       
             } 
+            rawDocs = new ArrayList<>();
+            System.out.println("starting new batch");
           }
-
         }
         
         
@@ -166,7 +171,7 @@ public class Dataloader implements CommandLineRunner{
 
       zipFile.close();
     }
-
+    System.out.println(">>>" + lineCount);
   }
     
 

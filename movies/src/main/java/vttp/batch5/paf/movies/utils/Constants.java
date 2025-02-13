@@ -1,7 +1,7 @@
 package vttp.batch5.paf.movies.utils;
 
 public class Constants {
-    public static final String MONGO_C_IMBD = "imdb";
+    public static final String MONGO_C_IMDB = "imdb";
     public static final String MONGO_C_ERRORS = "errors";
 
     public static final String F_IMDB_ID = "imdb_id";
