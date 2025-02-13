@@ -38,7 +38,7 @@ public class MovieService {
   @Autowired
   private MySQLMovieRepository mySQLMovieRepository;
 
-  @Value("${jasondatasource.name}")
+  @Value("${jsondatasource.name}")
   String name;
 
   @Value("${jsondatasource.batch}")
