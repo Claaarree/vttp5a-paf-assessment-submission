@@ -8,4 +8,6 @@ public class Queries {
             """;
         
     public static final String MYSQL_DELETE_BATCH = "delete from imdb where imdb_id = ?";
+
+    public static final String MYSQL_GET_MOVIE_BY_IMDB_ID = "select * from imdb where imdb_id = ?;";
 }

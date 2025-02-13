@@ -84,7 +84,6 @@ public class Dataloader implements CommandLineRunner{
       InputStreamReader isr = new InputStreamReader(is);
       BufferedReader br = new BufferedReader(isr);
 
-      // System.out.println(">>>" + br.readLine());
 
       List<Document> rawDocs = new ArrayList<>();
 
