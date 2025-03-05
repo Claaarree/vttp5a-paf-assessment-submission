@@ -28,11 +28,11 @@ public class MainController {
 
   
   // TODO: Task 4
-  @GetMapping(path = "/summary/pdf", produces = "application/json")
-  public ResponseEntity<String> generatePDFReport(@RequestParam int count) {
-    movieService.generatePDFReport(count);
+  @GetMapping(path = "/summary/pdf", produces = "application/pdf")
+  public ResponseEntity<byte[]> generatePDFReport(@RequestParam int count) {
+    byte[] pdf = movieService.generatePDFReport(count);
 
-    return ResponseEntity.ok().body("{message: Pdf generated in data folder!}");
+    return ResponseEntity.ok().body(pdf);
   }
 
 

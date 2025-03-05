@@ -4,6 +4,7 @@ import static vttp.batch5.paf.movies.utils.Constants.F_BUDGET;
 import static vttp.batch5.paf.movies.utils.Constants.F_REVENUE;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -86,7 +87,7 @@ public class MovieService {
   // TODO: Task 4
   // You may change the signature of this method by passing any number of parameters
   // and returning any type
-  public void generatePDFReport(int count) {
+  public byte[] generatePDFReport(int count) {
    
     JsonObject jObject1 = Json.createObjectBuilder()
         .add("name", name)
@@ -109,6 +110,8 @@ public class MovieService {
     }
     InputStream is2 = new ByteArrayInputStream(jArrayBuilderNew.build().toString().getBytes());
 
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+
     try {
       JsonDataSource reportDS = new JsonDataSource(is1);
       JsonDataSource directorsDS = new JsonDataSource(is2);
@@ -119,15 +122,20 @@ public class MovieService {
       JasperReport report = JasperCompileManager.compileReport("data\\director_movies_report.jrxml");
 
       JasperPrint print = JasperFillManager.fillReport(report, params, reportDS);
+      
 
       // generate PDF works on localhost but not on railway... something wrong with the docker folders?
       // see example of generated pdf in data folder
       JasperExportManager.exportReportToPdfFile(print, "data\\director_movies_report.pdf");
 
+      JasperExportManager.exportReportToPdfStream(print, os);
+
     } catch (JRException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    return os.toByteArray();
+
   }
 
 }
